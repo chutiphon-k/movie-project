@@ -15,7 +15,7 @@
 	            dataReview.movie_id = {{$movie->id}};
 	            dataReview.user_id = {{Auth::user()->id}};
 	            dataReview.info = review_message;
-				$('#chat-history').prepend('<li class="message message--me"><b>{{Auth::user()->name}}</b> : '+review_message+' <br></li>');
+				// $('#chat-history').prepend('<li class="message message--me"><b>{{Auth::user()->name}}</b> : '+review_message+' <br></li>');
 	            // dataReview.feeling = review_feeling;
                 $.ajax({
                 	url: '{{url("/storeReview")}}',
