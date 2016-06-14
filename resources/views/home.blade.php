@@ -28,9 +28,7 @@
 			type: 'get'
 		})
 		.done(function(result){
-			// console.log($(x).parents('div'));
 			$(x).closest('div').remove();
-			// console.log(result);
 		})
 		.fail(function(){
 			alert("error");
