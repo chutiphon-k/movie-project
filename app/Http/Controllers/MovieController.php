@@ -23,7 +23,7 @@ class MovieController extends Controller
     }
 
 	function getAllMovie(){
-		$movies = Movie::paginate(12);
+		$movies = Movie::orderBy('created_at','desc')->paginate(12);
 		return view('home',compact('movies'));
     }
 
@@ -67,13 +67,21 @@ class MovieController extends Controller
 
     function storeReview(Request $request){
     	$dataReview = $request->input('dataReview');
-		Review::create([
+		$x = Review::create([
 			'movie_id' => $dataReview['movie_id'],
 			'user_id' => $dataReview['user_id'],
 			'info' => $dataReview['info'],
 			'feeling' => 1
 		]);
-		return "OK";
+		return $x->created_at->diffForHumans();
+    }
+
+    function delete(Request $request){
+    	$id = $request->input('id');
+    	$movie = Movie::find($id);
+    	$movie->reviews()->delete();
+    	$movie->delete();
+    	return "OK";
     }
 
 

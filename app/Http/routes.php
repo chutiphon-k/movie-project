@@ -22,6 +22,8 @@ Route::get('/movie/add', 'MovieController@addMovie');
 
 Route::post('/movie/store', 'MovieController@store');
 
+Route::get('/movie/delete', 'MovieController@delete');
+
 Route::get('/movie/show/{id}', 'MovieController@showMovie');
 
 Route::get('/profile/{id}', 'ProfileController@showProfile');

@@ -1,3 +1,6 @@
+action='{{url("/movie/show",[$movie->id])}}'
+
+
 @extends('layouts.bgpage')
 
 @section('style')
@@ -6,33 +9,44 @@
 
 @section('script')
 	<script>
-		$('#chat-form').submit(function() {
+	      $('#chat-form').submit(function() {
 			var review_message = $('#chat-message').val();
-			// var review_feeling = $('#chat-feeling').val();
 			if(review_message){
-
 	            var dataReview = {};
 	            dataReview.movie_id = {{$movie->id}};
 	            dataReview.user_id = {{Auth::user()->id}};
 	            dataReview.info = review_message;
-				// $('#chat-history').prepend('<li class="message message--me"><b>{{Auth::user()->name}}</b> : '+review_message+' <br></li>');
-	            // dataReview.feeling = review_feeling;
+
                 $.ajax({
                 	url: '{{url("/storeReview")}}',
                 	type: "post",
                 	data: {'dataReview': dataReview},
-                	success: function(result){
-                		console.log(result);
-		        	},
-		        	error: function(){
-		        		console.log("Error Ajax");
-		        	}
-		   		});
+		   		})
+		   		.done(function(result){
+					var person = {
+					    a: '{{url("/profile",[Auth::user()->id])}}',
+					    b: '{{url(Auth::user()->avatar)}}',
+					    e: ' {{Auth::user()->name}}',
+					    c: review_message,
+					    d: result
+					};
+					var template = '<li class="message message--me">'+
+				        			'<a href=@{{a}}><img src=@{{b}} style="width:40px;height:40px;"></a>'+
+				        			'<b style="color:#2491F9;">@{{e}}</b> : @{{c}}'+
+				        			'<b style="float: right;font-size:70%;color:white;">@{{d}}</b>'+
+					        		'</li>';
+					var html = Mustache.to_html(template, person);
+					$('#chat-history').prepend(html);
+
+				})
+				.fail(function() {
+				    alert( "error" );
+				});
 	            $('#chat-history')[0].scrollDown = $('#chat-history')[0].scrollHeight;
-	            $(this)[0].reset();
-			 }
-			// return false;
-		});
+		      }
+	          $(this)[0].reset();
+	          return false;
+	      });
 	</script>
 @stop
 
@@ -56,7 +70,7 @@
 	        		</li>
 	        	@endforeach
 	        </ul>
-	        <form id="chat-form" action='{{url("/movie/show",[$movie->id])}}'>
+	        <form id="chat-form">
 	          <input type="text" id="chat-message" autocomplete="off" placeholder="Enter message here..." class="box">
 	        </form>
 	      </div>
