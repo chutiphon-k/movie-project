@@ -1,6 +1,3 @@
-action='{{url("/movie/show",[$movie->id])}}'
-
-
 @extends('layouts.bgpage')
 
 @section('style')
@@ -8,46 +5,7 @@ action='{{url("/movie/show",[$movie->id])}}'
 @stop
 
 @section('script')
-	<script>
-	      $('#chat-form').submit(function() {
-			var review_message = $('#chat-message').val();
-			if(review_message){
-	            var dataReview = {};
-	            dataReview.movie_id = {{$movie->id}};
-	            dataReview.user_id = {{Auth::user()->id}};
-	            dataReview.info = review_message;
-
-                $.ajax({
-                	url: '{{url("/storeReview")}}',
-                	type: "post",
-                	data: {'dataReview': dataReview},
-		   		})
-		   		.done(function(result){
-					var person = {
-					    a: '{{url("/profile",[Auth::user()->id])}}',
-					    b: '{{url(Auth::user()->avatar)}}',
-					    e: ' {{Auth::user()->name}}',
-					    c: review_message,
-					    d: result
-					};
-					var template = '<li class="message message--me">'+
-				        			'<a href=@{{a}}><img src=@{{b}} style="width:40px;height:40px;"></a>'+
-				        			'<b style="color:#2491F9;">@{{e}}</b> : @{{c}}'+
-				        			'<b style="float: right;font-size:70%;color:white;">@{{d}}</b>'+
-					        		'</li>';
-					var html = Mustache.to_html(template, person);
-					$('#chat-history').prepend(html);
-
-				})
-				.fail(function() {
-				    alert( "error" );
-				});
-	            $('#chat-history')[0].scrollDown = $('#chat-history')[0].scrollHeight;
-		      }
-	          $(this)[0].reset();
-	          return false;
-	      });
-	</script>
+	<script src="{{url('assets/js/movie.js')}}"></script>
 @stop
 
 @section('content')
@@ -71,6 +29,12 @@ action='{{url("/movie/show",[$movie->id])}}'
 	        	@endforeach
 	        </ul>
 	        <form id="chat-form">
+	          <div>
+		          <input type="hidden" value="{{$movie->id}}" id="movie_id">
+		          <input type="hidden" value="{{Auth::user()->id}}" id="user_id">
+		          <input type="hidden" value="{{Auth::user()->avatar}}" id="user_avatar">	          	
+		          <input type="hidden" value="{{Auth::user()->name}}" id="user_name">	          		          	
+	          </div>
 	          <input type="text" id="chat-message" autocomplete="off" placeholder="Enter message here..." class="box">
 	        </form>
 	      </div>

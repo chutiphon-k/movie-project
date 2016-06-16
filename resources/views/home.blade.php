@@ -19,35 +19,5 @@
 @stop
 
 @section('script')
-	<script type="text/javascript">
-	$("[id=aaa]").click(function(){
-		var x = this;
-		$.ajax({
-			url: '{{url("/movie/delete")}}',
-			data: {'id':x.value},
-			type: 'get'
-		})
-		.done(function(result){
-			$(x).closest('div').remove();
-		})
-		.fail(function(){
-			alert("error");
-		});
-	});
-	// function deleteMovie(x,id){
-	// 		$.ajax({
-	// 			url: '{{url("/movie/delete")}}',
-	// 			data: {'id':id},
-	// 			type: 'get'
-	// 		})
-	// 		.done(function(result){
-	// 			// console.log($(x).parents('div'));
-	// 			$(x).closest('div').remove();
-	// 			// console.log(result);
-	// 		})
-	// 		.fail(function(){
-	// 			alert("error");
-	// 		});
-	// }
-	</script>
+	<script src='{{url("/assets/js/home.js")}}'></script>
 @stop

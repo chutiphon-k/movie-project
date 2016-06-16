@@ -37,3 +37,9 @@ Route::get('/search', function () {
 Route::get('auth/logout', 'Auth\AuthController@logout');
 Route::get('auth/facebook', 'Auth\AuthController@redirectToProvider');
 Route::get('auth/facebook/callback', 'Auth\AuthController@handleProviderCallback');
+
+Route::group(['middleware' => 'auth'], function () {
+Route::get('/blocked', function(){ 
+	return "aaaaa"; 
+});
+});

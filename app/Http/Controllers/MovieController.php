@@ -78,9 +78,9 @@ class MovieController extends Controller
 
     function delete(Request $request){
     	$id = $request->input('id');
-    	$movie = Movie::find($id);
-    	$movie->reviews()->delete();
-    	$movie->delete();
+    	// $movie = Movie::find($id);
+    	// $movie->reviews()->delete();
+    	// $movie->delete();
     	return "OK";
     }
 
